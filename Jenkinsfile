@@ -10,13 +10,13 @@ pipeline {
 
         stage('Build Backend Image') {
             steps {
-                sh 'docker build -t deamon2002/devops-engineering:backend-v2 ./backend'
+                sh 'docker build -t deamon2002/devops-engineering:backend-v2 ./Backend'
             }
         }
 
         stage('Build Frontend Image') {
             steps {
-                sh 'docker build -t deamon2002/devops-engineering:frontend-v2 ./frontend'
+                sh 'docker build -t deamon2002/devops-engineering:frontend-v2 ./Frontend'
             }
         }
 
