@@ -44,19 +44,19 @@ pipeline {
 
         /* ================= CD PART STARTS HERE ================= */
 
-        stage('Terraform Init') {
+        stage('terraform-cd Init') {
             steps {
                 sh '''
-                  cd terraform
+                  cd terraform-cd
                   terraform init
                 '''
             }
         }
 
-        stage('Terraform Apply (Deploy to AWS)') {
+        stage('terraform-cd Apply (Deploy to AWS)') {
             steps {
                 sh '''
-                  cd terraform
+                  cd terraform-cd
                   terraform apply -auto-approve
                 '''
             }
