@@ -44,7 +44,7 @@ pipeline {
 
         /* ================= CD PART STARTS HERE ================= */
 
-        stage('terraform-cd Init') {
+        stage('Terraform Init') {
             steps {
                 sh '''
                   cd terraform-cd
@@ -53,7 +53,7 @@ pipeline {
             }
         }
 
-        stage('terraform-cd Apply (Deploy to AWS)') {
+        stage('Terraform Apply (Deploy to AWS)') {
             steps {
                 sh '''
                   cd terraform-cd
