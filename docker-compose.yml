@@ -20,7 +20,7 @@ services:
       - mongo
 
   frontend:
-    image: deamon2002/devops-engineering:frontend-v2
+    image: deamon2002/devops-engineering:frontend-v3
     container_name: frontend
     ports:
       - "3000:80"

@@ -1,10 +1,7 @@
 pipeline {
     agent any
 
-    environment {
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-    }
+    
 
     stages {
 
@@ -22,7 +19,7 @@ pipeline {
 
         stage('Build Frontend Image') {
             steps {
-                sh 'docker build -t deamon2002/devops-engineering:frontend-v2 ./Frontend'
+                sh 'docker build -t deamon2002/devops-engineering:frontend-v3 ./Frontend'
             }
         }
 
@@ -36,7 +33,7 @@ pipeline {
                     sh '''
                       echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
                       docker push deamon2002/devops-engineering:backend-v2
-                      docker push deamon2002/devops-engineering:frontend-v2
+                      docker push deamon2002/devops-engineering:frontend-v3
                     '''
                 }
             }

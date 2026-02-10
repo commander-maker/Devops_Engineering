@@ -12,7 +12,7 @@ function SignUp() {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:5000/api/auth/signup', {
+      const res = await fetch('http://13.201.87.153:5000/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
