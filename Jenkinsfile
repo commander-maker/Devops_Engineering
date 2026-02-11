@@ -41,14 +41,16 @@ pipeline {
 
         /* ================= CD PART STARTS HERE ================= */
 
-        stage('Terraform Init') {
-           steps {
-              sh '''
-                  cd terraform-cd
-                  terraform init
-                '''
-           }
-       } 
+       stage('Terraform Init') {
+    steps {
+        sh '''
+          cd terraform-cd
+          rm -rf .terraform
+          terraform init -upgrade
+        '''
+    }
+}
+ 
 
         stage('Terraform Apply') {
            steps {
