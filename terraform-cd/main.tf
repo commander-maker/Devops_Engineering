@@ -10,15 +10,6 @@ resource "aws_instance" "app_server" {
   }
 }
 
-terraform {
-  backend "s3" {
-    bucket  = "devops-terraform-state-deamon"
-    key     = "terraform-cd/terraform.tfstate"
-    region  = "ap-south-1"
-    encrypt = true
-  }
-}
-
 
 resource "aws_security_group" "app_sg" {
   name = "app-security-group"
