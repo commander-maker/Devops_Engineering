@@ -5,6 +5,20 @@ resource "aws_instance" "app_server" {
 
   vpc_security_group_ids = [aws_security_group.app_sg.id]
 
+  user_data = <<-EOF
+              #!/bin/bash
+              apt update -y
+              apt install -y docker.io
+              systemctl start docker
+              systemctl enable docker
+
+              docker pull deamon2002/devops-engineering:backend-v2
+              docker pull deamon2002/devops-engineering:frontend-v3
+
+              docker run -d -p 5000:5000 deamon2002/devops-engineering:backend-v2
+              docker run -d -p 3000:3000 deamon2002/devops-engineering:frontend-v3
+              EOF
+
   tags = {
     Name = "devops-app-server"
   }
