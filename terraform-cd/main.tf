@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "ap-south-1"
-}
-
 # -------------------------------
 # Security Group
 # -------------------------------
@@ -98,10 +94,3 @@ resource "aws_instance" "app_server" {
   }
 }
 
-# -------------------------------
-# Output
-# -------------------------------
-
-output "public_ip" {
-  value = aws_instance.app_server.public_ip
-}
