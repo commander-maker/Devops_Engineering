@@ -43,15 +43,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Init & Apply') {
-            steps {
-                sh '''
-                    cd $TF_DIR
-                    terraform init
-                    terraform apply -auto-approve
-                '''
-            }
-        }
+
 
         stage('Get EC2 Public IP') {
             steps {
@@ -64,21 +56,20 @@ pipeline {
             }
         }
 
-        stage('Deploy to EC2') {
-            steps {
-                sh '''
-                ssh -o StrictHostKeyChecking=no -i my-key.pem ubuntu@$PUBLIC_IP << EOF
-                  docker pull $IMAGE_BACKEND
-                  docker pull $IMAGE_FRONTEND
+        stage('Deploy Locally') {
+    steps {
+        sh '''
+            docker pull $IMAGE_BACKEND
+            docker pull $IMAGE_FRONTEND
 
-                  docker rm -f backend || true
-                  docker rm -f frontend || true
+            docker rm -f backend || true
+            docker rm -f frontend || true
 
-                  docker run -d --name backend -p 5000:5000 --restart always $IMAGE_BACKEND
-                  docker run -d --name frontend -p 3000:3000 --restart always $IMAGE_FRONTEND
-                EOF
-                '''
-            }
-        }
+            docker run -d --name backend -p 5000:5000 --restart always $IMAGE_BACKEND
+            docker run -d --name frontend -p 3000:3000 --restart always $IMAGE_FRONTEND
+        '''
+    }
+}
+
     }
 }
