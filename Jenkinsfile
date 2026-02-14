@@ -56,26 +56,51 @@ pipeline {
             }
         }
 
-        stage('Deploy with Docker Compose') {
+        stage('Deploy with Docker') {
             steps {
                 sh '''
-                    # Create .env file for backend
-                    cat > .env << EOF
-MONGO_URI=mongodb://mongo:27017/devops-db
-PORT=5000
-EOF
-
                     # Pull latest images
-                    docker-compose pull
+                    docker pull $IMAGE_BACKEND
+                    docker pull $IMAGE_FRONTEND
+                    docker pull mongo:6.0
 
-                    # Stop and remove old containers
-                    docker-compose down
+                    # Remove old containers
+                    docker rm -f backend || true
+                    docker rm -f frontend || true
+                    docker rm -f mongodb || true
 
-                    # Start all services (MongoDB, Backend, Frontend)
-                    docker-compose up -d
+                    # Create docker network if it doesn't exist
+                    docker network create app-network || true
+
+                    # Start MongoDB
+                    docker run -d --name mongodb \
+                      --network app-network \
+                      -p 27017:27017 \
+                      -v mongo-data:/data/db \
+                      --restart always \
+                      mongo:6.0
+
+                    # Wait for MongoDB to be ready
+                    sleep 5
+
+                    # Start Backend (connected to MongoDB)
+                    docker run -d --name backend \
+                      --network app-network \
+                      -p 5000:5000 \
+                      -e MONGO_URI="mongodb://mongodb:27017/devops-db" \
+                      -e PORT=5000 \
+                      --restart always \
+                      $IMAGE_BACKEND
+
+                    # Start Frontend
+                    docker run -d --name frontend \
+                      --network app-network \
+                      -p 3000:80 \
+                      --restart always \
+                      $IMAGE_FRONTEND
 
                     # Show running containers
-                    docker-compose ps
+                    docker ps
                 '''
             }
         }
