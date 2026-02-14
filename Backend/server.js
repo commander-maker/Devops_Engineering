@@ -14,7 +14,10 @@ app.use(express.json());
 const MONGO_URI = process.env.MONGO_URI;
 
 const authRoutes = require('./routes/auth');
+const workerRoutes = require('./routes/workers');
+
 app.use('/api/auth', authRoutes);
+app.use('/api/workers', workerRoutes);
 
 mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ Connected to MongoDB'))
