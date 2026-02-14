@@ -66,7 +66,7 @@ pipeline {
             docker rm -f frontend || true
 
             docker run -d --name backend -p 5000:5000 --restart always $IMAGE_BACKEND
-            docker run -d --name frontend -p 3000:3000 --restart always $IMAGE_FRONTEND
+            docker run -d --name frontend -p 3000:80 --restart always $IMAGE_FRONTEND
         '''
     }
 }
