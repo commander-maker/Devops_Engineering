@@ -56,20 +56,29 @@ pipeline {
             }
         }
 
-        stage('Deploy Locally') {
-    steps {
-        sh '''
-            docker pull $IMAGE_BACKEND
-            docker pull $IMAGE_FRONTEND
+        stage('Deploy with Docker Compose') {
+            steps {
+                sh '''
+                    # Create .env file for backend
+                    cat > .env << EOF
+MONGO_URI=mongodb://mongo:27017/devops-db
+PORT=5000
+EOF
 
-            docker rm -f backend || true
-            docker rm -f frontend || true
+                    # Pull latest images
+                    docker-compose pull
 
-            docker run -d --name backend -p 5000:5000 --restart always $IMAGE_BACKEND
-            docker run -d --name frontend -p 3000:80 --restart always $IMAGE_FRONTEND
-        '''
-    }
-}
+                    # Stop and remove old containers
+                    docker-compose down
+
+                    # Start all services (MongoDB, Backend, Frontend)
+                    docker-compose up -d
+
+                    # Show running containers
+                    docker-compose ps
+                '''
+            }
+        }
 
     }
 }
