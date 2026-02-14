@@ -10,7 +10,7 @@ resource "aws_security_group" "app_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["YOUR_PUBLIC_IP/32"]   # 🔥 IMPORTANT: Do not use 0.0.0.0/0 for SSH
   }
 
   ingress {
@@ -46,47 +46,20 @@ resource "aws_security_group" "app_sg" {
 # -------------------------------
 
 resource "aws_instance" "app_server" {
-  ami           = "ami-0f58b397bc5c1f2e8"  # Ubuntu 22.04 (ap-south-1)
+  ami           = "ami-0f58b397bc5c1f2e8"
   instance_type = "t3.micro"
   key_name      = "my-key"
 
   vpc_security_group_ids = [aws_security_group.app_sg.id]
 
-  user_data_replace_on_change = true
-
+  # Install Docker only
   user_data = <<-EOF
               #!/bin/bash
-              set -e
-
-              # Update system
               apt update -y
-
-              # Install Docker
               apt install -y docker.io
               systemctl start docker
               systemctl enable docker
-
-              # Remove old containers if they exist
-              docker rm -f backend || true
-              docker rm -f frontend || true
-
-              # Pull latest images
-              docker pull deamon2002/devops-engineering:backend-v2
-              docker pull deamon2002/devops-engineering:frontend-v3
-
-              # Run backend
-              docker run -d \
-                --name backend \
-                -p 5000:5000 \
-                --restart always \
-                deamon2002/devops-engineering:backend-v2
-
-              # Run frontend
-              docker run -d \
-                --name frontend \
-                -p 3000:3000 \
-                --restart always \
-                deamon2002/devops-engineering:frontend-v3
+              usermod -aG docker ubuntu
               EOF
 
   tags = {
@@ -94,3 +67,10 @@ resource "aws_instance" "app_server" {
   }
 }
 
+# -------------------------------
+# Output Public IP
+# -------------------------------
+
+output "public_ip" {
+  value = aws_instance.app_server.public_ip
+}
