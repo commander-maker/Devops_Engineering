@@ -2,10 +2,20 @@ import React, { useState, useEffect } from 'react';
 import '../css/home.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import heroBg from '../assets/home1.jpg';
+import skilledWorkersBg from '../assets/skilled-workers-bg.png';
+import worker1 from '../assets/worker1.webp';
+import worker2 from '../assets/worker2.jpg';
+import worker3 from '../assets/worker3.png';
+import worker4 from '../assets/worker4.jpeg';
+import worker5 from '../assets/worker5.jpg';
+import worker6 from '../assets/worker6.jpg';
 
 function Home() {
   const [workers, setWorkers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const workerFallbackImages = [worker1, worker2, worker3, worker4, worker5, worker6];
 
   useEffect(() => {
     // Fetch top-rated workers from backend
@@ -33,15 +43,22 @@ function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="hero-section">
+      <section
+        id="home"
+        className="hero-section"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${heroBg})`,
+        }}
+      >
         <div className="hero-content">
+          
           <h1>Find It Local</h1>
           <p className="hero-subtitle">May be It is Near You</p>
         </div>
       </section>
 
       {/* Services Section */}
-      <section className="services-section">
+      <section id="services" className="services-section">
         <h2>Our Services</h2>
         <div className="services-grid">
           <div className="service-card">
@@ -90,17 +107,20 @@ function Home() {
       </section>
 
       {/* Top Rated Workers Section */}
-      <section className="top-workers-section">
+      <section id="workers" className="top-workers-section">
         <h2>Top Rated Workers</h2>
         {loading ? (
           <p>Loading workers...</p>
         ) : (
           <div className="workers-grid">
             {workers.length > 0 ? (
-              workers.map((worker) => (
+              workers.map((worker, index) => (
                 <div key={worker._id} className="worker-card">
                   <div className="worker-image">
-                    <img src={worker.image || '/assets/default-worker.jpg'} alt={worker.name} />
+                    <img
+                      src={worker.image || workerFallbackImages[index % workerFallbackImages.length]}
+                      alt={worker.name}
+                    />
                   </div>
                   <h3>{worker.name}</h3>
                   <p className="worker-profession">{worker.profession} • {worker.experience} years experience</p>
@@ -119,7 +139,12 @@ function Home() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="cta-section">
+      <section
+        className="cta-section"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${skilledWorkersBg})`,
+        }}
+      >
         <div className="cta-content">
           <h2>Are You a Skilled Worker?</h2>
           <p>Join our platform and connect with customers in your area</p>
@@ -142,6 +167,27 @@ function Home() {
             <span className="feature-icon">📊</span>
             <p>Profile management</p>
           </div>
+        </div>
+      </section>
+
+      <section id="about" className="info-section">
+        <div className="info-inner">
+          <h2>About Us</h2>
+          <p>
+            Find It Local connects customers with skilled workers nearby.
+            Browse services, compare ratings, and book quickly.
+          </p>
+        </div>
+      </section>
+
+      <section id="contact" className="info-section info-section--alt">
+        <div className="info-inner">
+          <h2>Contact Us</h2>
+          <p>
+            Email: support@finditlocal.com
+            <br />
+            Phone: +94 77 123 4567
+          </p>
         </div>
       </section>
 

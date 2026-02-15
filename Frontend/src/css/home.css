@@ -10,6 +10,10 @@ body, html {
   background: #f8f9fa;
 }
 
+section {
+  scroll-margin-top: 90px;
+}
+
 .home-container {
   width: 100%;
   min-height: 100vh;
@@ -17,14 +21,21 @@ body, html {
 
 /* Hero Section */
 .hero-section {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-              url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600') center/cover;
-  height: 500px;
+  background-position: center;
+  background-size: cover;
+  height: 620px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   color: white;
-  text-align: center;
+  text-align: left;
+}
+
+.hero-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .hero-content h1 {
@@ -36,6 +47,16 @@ body, html {
 .hero-subtitle {
   font-size: 24px;
   font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 44px;
+  }
+
+  .hero-subtitle {
+    font-size: 18px;
+  }
 }
 
 /* Services Section */
@@ -210,6 +231,7 @@ body, html {
   font-size: 14px;
   font-weight: 500;
   transition: all 0.3s;
+  color: #000;
 }
 
 .view-profile-btn:hover {
@@ -219,11 +241,38 @@ body, html {
 
 /* Call to Action Section */
 .cta-section {
-  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-              url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600') center/cover;
+  background-position: center;
+  background-size: cover;
   padding: 80px 20px;
   color: white;
   text-align: center;
+}
+
+.info-section {
+  padding: 80px 20px;
+  background: #ffffff;
+}
+
+.info-section--alt {
+  background: #f8f9fa;
+}
+
+.info-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.info-inner h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.info-inner p {
+  color: #666;
+  font-size: 16px;
+  line-height: 1.8;
 }
 
 .cta-content h2 {

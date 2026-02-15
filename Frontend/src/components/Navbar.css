@@ -5,6 +5,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
 }
 
 .navbar-container {
@@ -14,6 +15,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  width: 100%;
 }
 
 .navbar-logo {
@@ -25,14 +27,18 @@
   color: #333;
 }
 
-.logo-icon {
-  font-size: 32px;
+.logo-img {
+  width: 140px;
+  height: 44px;
+  object-fit: contain;
 }
 
 .navbar-menu {
   display: flex;
   list-style: none;
   gap: 30px;
+  padding: 0;
+  margin: 0;
 }
 
 .navbar-menu li a {
@@ -53,6 +59,18 @@
   background: white;
   cursor: pointer;
   font-size: 14px;
+}
+
+.navbar-language {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.language-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 
 @media (max-width: 768px) {

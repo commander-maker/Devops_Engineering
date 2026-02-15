@@ -1,25 +1,21 @@
-/* Reset */
-* {
+.auth-page,
+.auth-page * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
   font-family: 'Poppins', sans-serif;
 }
 
-html, body {
-  height: 100%;
+.auth-page {
+  min-height: 100vh;
   width: 100%;
-}
-
-body {
   background: linear-gradient(to right, #ff7e5f, #feb47b);
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 }
 
 /* Centered card container */
-.container {
+.auth-page .container {
   background: #fff;
   padding: 50px 40px;
   border-radius: 15px;
@@ -29,12 +25,12 @@ body {
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
-h2 {
+.auth-page h2 {
   margin-bottom: 25px;
   color: #333;
 }
 
-input {
+.auth-page input {
   width: 100%;
   padding: 12px 15px;
   margin: 12px 0;
@@ -43,12 +39,12 @@ input {
   font-size: 15px;
 }
 
-input:focus {
+.auth-page input:focus {
   border-color: #ff7e5f;
   outline: none;
 }
 
-button {
+.auth-page button {
   width: 100%;
   padding: 12px;
   margin-top: 10px;
@@ -61,28 +57,28 @@ button {
   transition: 0.3s;
 }
 
-button:hover {
+.auth-page button:hover {
   background-color: #feb47b;
 }
 
-p {
+.auth-page p {
   margin-top: 15px;
   font-size: 14px;
 }
 
-a {
+.auth-page a {
   color: #ff7e5f;
   text-decoration: none;
   font-weight: 500;
 }
 
-a:hover {
+.auth-page a:hover {
   text-decoration: underline;
 }
 
 /* Make the form responsive on small screens */
 @media (max-width: 500px) {
-  .container {
+  .auth-page .container {
     padding: 30px 20px;
     width: 90%;
   }
