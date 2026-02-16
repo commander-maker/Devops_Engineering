@@ -3,6 +3,7 @@
 
 This project demonstrates a complete CI/CD pipeline using:
 
+
 Docker for containerization
 Jenkins for Continuous Integration & Deployment
 Terraform for Infrastructure as Code
@@ -68,8 +69,8 @@ Frontend	deamon2002/devops-engineering:frontend-v3
 
 🌍 Application Access
 
-Frontend: http://<EC2_PUBLIC_IP>:3000
-Backend: http://<EC2_PUBLIC_IP>:5000
+Frontend: http://43.205.115.131:3000
+Backend: http://43.205.115.131:5000
 
 🧠 Key DevOps Concepts Demonstrated
 
