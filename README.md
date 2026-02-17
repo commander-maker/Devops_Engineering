@@ -54,3 +54,11 @@ Terraform provisions:
 ```bash
 terraform init
 terraform apply
+
+```
+## Final Output
+
+![Jenkins Pipeline](images/jenkins-success.png)
+![Application Running](images/app-running.png)
+
+---
