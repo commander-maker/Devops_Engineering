@@ -44,7 +44,7 @@ pipeline {
         }
 
 
-
+/*
         stage('Get EC2 Public IP') {
             steps {
                 script {
@@ -54,7 +54,7 @@ pipeline {
                     ).trim()
                 }
             }
-        }
+        } */
 
         stage('Deploy with Docker') {
             steps {
