@@ -1,4 +1,28 @@
 # -------------------------------
+# AMI and SSH key pair
+# -------------------------------
+
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"]
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+resource "aws_key_pair" "app_key" {
+  key_name   = var.key_name
+  public_key = file(var.public_key_path)
+}
+
+# -------------------------------
 # Security Group
 # -------------------------------
 
@@ -54,11 +78,20 @@ resource "aws_security_group" "app_sg" {
 # -------------------------------
 
 resource "aws_instance" "app_server" {
-  ami           = "ami-0f58b397bc5c1f2e8"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
-  key_name      = "my-key"
+  key_name      = aws_key_pair.app_key.key_name
 
   vpc_security_group_ids = [aws_security_group.app_sg.id]
+
+  root_block_device {
+    volume_size = 30
+    volume_type = "gp3"
+    encrypted   = true
+  }
+
+  user_data_replace_on_change = false
+
 
   # Install Docker, Jenkins, Terraform, and AWS CLI
   user_data = <<-EOF
@@ -67,6 +100,17 @@ resource "aws_instance" "app_server" {
               
               # Update system
               apt update -y
+
+              # Add swap space before memory-intensive package installations
+              if ! swapon --show=NAME --noheadings | grep -q /swapfile; then
+                if [ ! -f /swapfile ]; then
+                  fallocate -l 4G /swapfile || dd if=/dev/zero of=/swapfile bs=1M count=4096
+                fi
+                chmod 600 /swapfile
+                mkswap /swapfile
+                swapon /swapfile
+              fi
+              grep -q '^/swapfile none swap sw 0 0$' /etc/fstab || echo '/swapfile none swap sw 0 0' >> /etc/fstab
               
               # Install Docker
               apt install -y docker.io
@@ -99,13 +143,6 @@ resource "aws_instance" "app_server" {
               echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
               apt update -y
               apt install -y terraform
-              
-              # Add swap space
-              fallocate -l 2G /swapfile || dd if=/dev/zero of=/swapfile bs=1M count=2048
-              chmod 600 /swapfile
-              mkswap /swapfile
-              swapon /swapfile
-              echo '/swapfile none swap sw 0 0' >> /etc/fstab
               
               # Restart Jenkins to apply docker group
               systemctl restart jenkins
