@@ -118,12 +118,13 @@ resource "aws_instance" "app_server" {
               systemctl enable docker
               usermod -aG docker ubuntu
               
-              # Install Java (required for Jenkins)
-              apt install -y openjdk-17-jdk
+              # Install Java 21 (required by current Jenkins)
+              apt install -y curl openjdk-21-jre
               
               # Install Jenkins
-              wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | apt-key add -
-              echo "deb https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list
+              mkdir -p /etc/apt/keyrings
+              curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key | tee /etc/apt/keyrings/jenkins-keyring.asc > /dev/null
+              echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | tee /etc/apt/sources.list.d/jenkins.list
               apt update -y
               apt install -y jenkins
               systemctl start jenkins
@@ -131,7 +132,7 @@ resource "aws_instance" "app_server" {
               usermod -aG docker jenkins
               
               # Install AWS CLI
-              apt install -y unzip curl
+              apt install -y unzip
               curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
               unzip awscliv2.zip
               ./aws/install

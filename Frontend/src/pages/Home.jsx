@@ -24,7 +24,7 @@ function Home() {
 
   const fetchTopWorkers = async () => {
     try {
-      const response = await fetch('http://43.205.115.131:5000/api/workers/top-rated');
+      const response = await fetch('http://52.66.243.147:5000/api/workers/top-rated');
       const data = await response.json();
       setWorkers(data);
       setLoading(false);
@@ -53,7 +53,7 @@ function Home() {
         <div className="hero-content">
           
           <h1>Find It Local</h1>
-          <p className="hero-subtitle">May be It is Near You</p>
+          <p className="hero-subtitle">May be It is Near You!!!!</p>
         </div>
       </section>
 
