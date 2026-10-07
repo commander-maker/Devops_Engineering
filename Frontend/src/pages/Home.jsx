@@ -53,7 +53,7 @@ function Home() {
         <div className="hero-content">
           
           <h1>Find It Local</h1>
-          <p className="hero-subtitle">MAY be It is Near You </p>
+          <p className="hero-subtitle">MAY BE It is Near You </p>
         </div>
       </section>
 
